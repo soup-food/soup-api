@@ -1,0 +1,20 @@
+services:
+  backend:
+    container_name: sus_food_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - uv-cache:/root/.cache/uv
+
+  nginx:
+    container_name: sus_food_nginx
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+
+volumes:
+  uv-cache:

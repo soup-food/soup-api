@@ -1,0 +1,56 @@
+# Python specific ignores
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+../.venv
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+site/
+
+# Build artifacts
+dist/
+build/
+*.egg
+*.whl
+
+# UV specific cache (already handled by --mount=type=cache)
+.uv/
+.root/.cache/uv/ # While the build uses a cache mount, we don't want to copy a local one if it exists
+
+# Operating System and Editor specific ignores
+.DS_Store
+.Trash/
+Thumbs.db
+
+# Git ignores
+.git
+.gitignore
+
+# IDE specific ignores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Local environment and temporary files
+*.env
+.env.*
+!.env.example # Keep .env.example if you have one
+tmp/
+temp/
+logs/
+*.log
+*.sqlite3 # Or other local database files
+
+# Nginx specific (don't copy local certs into the build context if they're not needed there)
+# If your Dockerfile copies certs into the Nginx container at runtime,
+# you might want to exclude the local certs directory from the *build context*
+# to avoid unnecessary copying.
+#nginx/certs/ # Uncomment if you have a certs directory and don't want to copy it. This is just a demo.

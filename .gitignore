@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# PyCharm & VS Code
+.idea/
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+*.out
+*.err
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+*.sock
+docker-compose.override.yml
+docker-compose.dev.yml
+
+# Docker volumes (if mounted locally)
+volumes/
+data/
+tmp/
+*.db
+
+# Coverage / testing
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# Nginx certs (if self-signed or not committed)
+nginx/certs/
