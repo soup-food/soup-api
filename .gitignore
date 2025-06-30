@@ -7,8 +7,13 @@ __pycache__/
 .venv/
 venv/
 env/
-**/*.env.*
+.env
+.env.*
+*.env
 **/*.env
+**/.env
+**/.env.*
+backend/.env
 ENV/
 
 # PyCharm & VS Code
