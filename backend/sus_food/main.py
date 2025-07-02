@@ -21,11 +21,13 @@ async def get_all_foods() -> list[Food]:
     """
     Endpoint to retrieve all food items.
     """
-    await repository.add_food(FoodCreate(
-        name="Passatelli in brodo",
-        calories=400,
-        description="Pasta a base di pane grattugiato, parmigiano e uova, servita in brodo di carne. Comfort food romagnolo per eccellenza."
-    ))
+    await repository.add_food(
+        FoodCreate(
+            name="Passatelli in brodo",
+            calories=400,
+            description="Pasta a base di pane grattugiato, parmigiano e uova, servita in brodo di carne. Comfort food romagnolo per eccellenza.",
+        )
+    )
     response = await repository.get_all_foods()
     print(response)
     return response

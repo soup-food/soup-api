@@ -11,16 +11,16 @@ from sus_food.repository.repository import Repository
 
 load_dotenv()
 
-MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING") 
+MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 MONGO_DATABASE = os.getenv("MONGO_DATABASE")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
 CONNECTION_TIMEOUT = int(os.getenv("CONNECTION_TIMEOUT", 2000))
 
+
 class MongoDBRepository(Repository):
     def __init__(self):
         self._collection: AsyncIOMotorCollection = AsyncIOMotorClient(
-            MONGO_CONNECTION_STRING,
-            serverSelectionTimeoutMS=CONNECTION_TIMEOUT
+            MONGO_CONNECTION_STRING, serverSelectionTimeoutMS=CONNECTION_TIMEOUT
         )[MONGO_DATABASE][MONGO_COLLECTION]
 
     @staticmethod
@@ -48,7 +48,7 @@ class MongoDBRepository(Repository):
             doc = await self._collection.find_one({"_id": str(food_id)})
             if doc:
                 return self._map_doc_to_food(doc)
-        except PyMongoError as e:
+        except PyMongoError:
             # TODO: Handle logging
             return None
 
@@ -61,8 +61,8 @@ class MongoDBRepository(Repository):
             for doc in docs:
                 foods.append(self._map_doc_to_food(doc))
             return foods
-        except PyMongoError as e:
-            #TODO: Handle logging
+        except PyMongoError:
+            # TODO: Handle logging
             return []
 
     @override
@@ -70,13 +70,13 @@ class MongoDBRepository(Repository):
         try:
             new_food = Food(**food_create.model_dump())
             food_data = new_food.model_dump(by_alias=True)
-            food_data["_id"] = str(new_food.id) # Ensure _id is a string for storage
+            food_data["_id"] = str(new_food.id)  # Ensure _id is a string for storage
 
             result = await self._collection.insert_one(food_data)
             if result.inserted_id:
                 return new_food.id
             return None
-        except PyMongoError as e:
+        except PyMongoError:
             # TODO: Handle logging
             return None
 
@@ -85,8 +85,7 @@ class MongoDBRepository(Repository):
         try:
             food_id_to_update = food_update.id
 
-            update_data = food_update.model_dump(exclude_unset=True,
-                                                 by_alias=True)
+            update_data = food_update.model_dump(exclude_unset=True, by_alias=True)
 
             update_data.pop("_id", None)
 
@@ -95,12 +94,11 @@ class MongoDBRepository(Repository):
                 return False
 
             result = await self.collection.update_one(
-                {"_id": str(food_id_to_update)},
-                {"$set": update_data}
+                {"_id": str(food_id_to_update)}, {"$set": update_data}
             )
 
             return result.modified_count > 0
-        except PyMongoError as e:
+        except PyMongoError:
             # TODO: Handle logging
             return False
 
@@ -109,7 +107,6 @@ class MongoDBRepository(Repository):
         try:
             result = await self._collection.delete_one({"_id": str(food_id)})
             return result.deleted_count > 0
-        except PyMongoError as e:
+        except PyMongoError:
             # TODO: Handle logging
             return False
-
