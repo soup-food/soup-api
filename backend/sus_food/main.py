@@ -1,19 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 from sus_food.models.food import Food, FoodCreate
 from sus_food.repository.repository_factory import RepositoryFactory
 
-app = FastAPI()
-
 repository = RepositoryFactory.create_repository()
 
+app = FastAPI(root_path="/api")
 
-@app.get("/")
-async def read_root():
+
+@app.get("/", response_model=dict)
+async def read_root(request: Request):
     """
     Root endpoint to check if the API is running.
+    Returns the full request URL and connection status.
     """
-    return "Connection alive" if await repository.ping() else "Connection not alive"
+    return {
+        "url": str(request.url),
+        "status": "Connection alive" if await repository.ping() else "Connection not alive"
+    }
+
 
 
 @app.get("/get_all_foods", response_model=list[Food])
