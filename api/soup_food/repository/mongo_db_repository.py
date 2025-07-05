@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from pymongo.errors import PyMongoError
 
-from sus_food.models.food import Food, FoodUpdate, FoodCreate
-from sus_food.repository.repository import Repository
+from soup_food.models.food import Food, FoodUpdate, FoodCreate
+from soup_food.repository.repository import Repository
 
 load_dotenv()
 

@@ -15,10 +15,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 
 # Copy the project into the image
-ADD ./sus_food /app/sus_food
+ADD ./soup_food /app/soup_food
 
 # Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
-CMD ["uv", "run", "uvicorn", "sus_food.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "soup_food.main:app", "--host", "0.0.0.0", "--port", "8000"]

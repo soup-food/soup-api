@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from uuid import UUID
 
-from sus_food.models.food import FoodCreate, Food, FoodUpdate
+from soup_food.models.food import FoodCreate, Food, FoodUpdate
 
 
 class Repository(ABC):

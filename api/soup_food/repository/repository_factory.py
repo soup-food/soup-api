@@ -1,5 +1,5 @@
-from sus_food.repository.mongo_db_repository import MongoDBRepository
-from sus_food.repository.repository import Repository
+from soup_food.repository.mongo_db_repository import MongoDBRepository
+from soup_food.repository.repository import Repository
 
 
 class RepositoryFactory:

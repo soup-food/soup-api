@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 
-from sus_food.models.food import Food, FoodCreate
-from sus_food.repository.repository_factory import RepositoryFactory
+from soup_food.models.food import Food, FoodCreate
+from soup_food.repository.repository_factory import RepositoryFactory
 
 repository = RepositoryFactory.create_repository()
 
