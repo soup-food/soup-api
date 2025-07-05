@@ -57,3 +57,5 @@ htmlcov/
 nginx/certs/
 
 logs/
+
+.ruff_cache/
