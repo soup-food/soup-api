@@ -21,6 +21,11 @@ async def read_root(request: Request):
 
 
 
+@app.get("/hello")
+async def get_all_foods():
+    return "Hello"
+
+
 @app.get("/get_all_foods", response_model=list[Food])
 async def get_all_foods() -> list[Food]:
     """
