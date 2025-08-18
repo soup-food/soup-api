@@ -3,7 +3,6 @@ from typing import Optional, override, Mapping
 from uuid import UUID
 
 from dotenv import load_dotenv
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from pymongo.errors import PyMongoError
 
 from soup_food.models.food import Food, FoodUpdate, FoodCreate
@@ -18,10 +17,8 @@ CONNECTION_TIMEOUT = int(os.getenv("CONNECTION_TIMEOUT", 2000))
 
 
 class MongoDBRepository(Repository):
-    def __init__(self):
-        self._collection: AsyncIOMotorCollection = AsyncIOMotorClient(
-            MONGO_CONNECTION_STRING, serverSelectionTimeoutMS=CONNECTION_TIMEOUT
-        )[MONGO_DATABASE][MONGO_COLLECTION]
+    def __init__(self, collection):
+        self._collection = collection
 
     @staticmethod
     def _map_doc_to_food(doc: Mapping) -> Optional[Food]:
