@@ -1,4 +1,4 @@
-from typing import Optional, override, List
+from typing import Optional, override
 from uuid import UUID
 
 from soup_food.models.food import Food, FoodCreate, FoodUpdate
@@ -7,7 +7,7 @@ from soup_food.repository.repository import Repository
 
 class InMemoryRepository(Repository):
     def __init__(self):
-        self._foods: List[Food] = []
+        self._foods: list[Food] = []
 
     @override
     async def ping(self) -> bool:

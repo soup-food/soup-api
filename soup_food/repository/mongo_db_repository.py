@@ -1,19 +1,10 @@
-import os
 from typing import Optional, override, Mapping
 from uuid import UUID
 
-from dotenv import load_dotenv
 from pymongo.errors import PyMongoError
 
 from soup_food.models.food import Food, FoodUpdate, FoodCreate
 from soup_food.repository.repository import Repository
-
-load_dotenv()
-
-MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
-MONGO_DATABASE = os.getenv("MONGO_DATABASE")
-MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
-CONNECTION_TIMEOUT = int(os.getenv("CONNECTION_TIMEOUT", 2000))
 
 
 class MongoDBRepository(Repository):
