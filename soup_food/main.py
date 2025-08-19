@@ -1,18 +1,25 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
+from dependency_injector.wiring import inject, Provide
 
 from soup_food.models.food import Food, FoodCreate
 from soup_food.container import Container
+from soup_food.repository.repository import Repository
 
-app = FastAPI(root_path="/api")
 
 container = Container()
-container.config.repo_type.override("inmemory")  # or "mongo"
+container.config.repo_type.from_env("REPO_TYPE", default="production")
+container.wire(modules=[__name__])
 
-repository = container.repo()  # Get the repository instance
+
+app = FastAPI(root_path="/api")
+app.container = container
 
 
 @app.get("/", response_model=dict)
-async def read_root(request: Request):
+@inject
+async def read_root(
+    request: Request, repository: Repository = Depends(Provide[Container.repo])
+):
     """
     Root endpoint to check if the API is running.
     Returns the full request URL and connection status.
@@ -25,7 +32,10 @@ async def read_root(request: Request):
 
 
 @app.get("/get_all_foods", response_model=list[Food])
-async def get_all_foods_endpoint():
+@inject
+async def get_all_foods_endpoint(
+    repository: Repository = Depends(Provide[Container.repo]),
+):
     """
     Endpoint to retrieve all food items.
     Adds a sample food before fetching all.
