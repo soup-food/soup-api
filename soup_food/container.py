@@ -13,23 +13,28 @@ def get_collection(
 
 
 class Container(containers.DeclarativeContainer):
-    config: providers.Configuration = providers.Configuration()
+    config = providers.Configuration()
 
-    mongo_client: providers.Singleton[AsyncIOMotorClient] = providers.Singleton(
+    # Mongo client singleton
+    mongo_client = providers.Singleton(
         AsyncIOMotorClient,
         config.mongo.connection_string,
         serverSelectionTimeoutMS=config.mongo.timeout,
     )
 
-    mongo_collection: providers.Singleton[AsyncIOMotorCollection] = providers.Singleton(
+    mongo_collection = providers.Singleton(
         get_collection,
         client=mongo_client,
         db_name=config.mongo.database,
         collection_name=config.mongo.collection,
     )
 
-    repo: providers.Selector = providers.Selector(
+    # Selector to pick repository implementation
+    repo_selector = providers.Selector(
         config.repo_type,
         mongo=providers.Factory(MongoDBRepository, collection=mongo_collection),
         inmemory=providers.Factory(InMemoryRepository),
     )
+
+    # Factory that resolves the selected repository
+    repo = repo_selector
