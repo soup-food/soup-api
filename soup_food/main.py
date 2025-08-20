@@ -15,7 +15,7 @@ if container.config.repo_type() == "mongo":
     container.config.mongo.collection.from_env("MONGO_COLLECTION")
     container.config.mongo.timeout.from_env("CONNECTION_TIMEOUT", as_=int)
 
-app = FastAPI(root_path="/api")
+app = FastAPI()
 app.container = container
 
 
@@ -24,7 +24,7 @@ def get_repository(request: Request) -> Repository:
 
 
 @app.get("/", response_model=dict)
-async def read_root(request: Request, repository: Repository = Depends(get_repository)):
+async def read_root(repository: Repository = Depends(get_repository)):
     try:
         alive = await repository.ping()
         return {
@@ -41,17 +41,14 @@ async def add_sample_food_endpoint(
     repository: Repository = Depends(get_repository),
 ):
     try:
-        await repository.add_food(
+        food = await repository.add_food(
             FoodCreate(
                 name="Passatelli in brodo",
                 calories=400,
-                description=(
-                    "Pasta a base di pane grattugiato, parmigiano e uova, "
-                    "servita in brodo di carne. Comfort food romagnolo per eccellenza."
-                ),
+                description="Pasta a base di pane grattugiato, parmigiano e uova, servita in brodo di carne.",
             )
         )
-        return {"message": "Sample food added."}
+        return food  # or {"message": "Sample food added."}
     except RepositoryError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
